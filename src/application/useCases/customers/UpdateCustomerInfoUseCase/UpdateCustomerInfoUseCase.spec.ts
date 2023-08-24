@@ -32,7 +32,6 @@ describe('UpdateCustomerInfoUseCase', () => {
       ddd: 82,
       phone: 999999999,
       cpf: new Cpf('931.147.680-32'),
-      cnpj: null,
       address: new Address({
         cep: new Cep('57300-000'),
         street: 'brasil',

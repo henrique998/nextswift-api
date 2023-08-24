@@ -26,15 +26,15 @@ describe('GetProfileInfoUseCase', () => {
       name: 'jhon doe',
       email: new Email('jhondoe@gmail.com'),
       password: new Password('Herozero10@#'),
+      ddd: 82,
       phone: 99999999,
       avatar: 'https://github.com/jhondoe.png',
-      gender: 'M',
-      roles: null,
+      role: '',
+      cpf: '777.777.777-05',
       updatedAt: null,
     })
 
     await employeesRepoInMemory.create(employee, 'adminId')
-
     const result = await getProfileInfoUseCase.execute(employee.id)
 
     expect(result.employee.email.value).toEqual(employee.email.value)

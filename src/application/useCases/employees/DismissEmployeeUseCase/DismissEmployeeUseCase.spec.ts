@@ -41,22 +41,24 @@ describe('DismissEmployeeUseCase', () => {
       name: 'Admin',
       email: new Email('admin98@gmail.com'),
       password: new Password('Herozero10@#'),
+      ddd: 82,
       phone: 99999999,
       avatar: 'avatar.png',
-      gender: 'M',
       updatedAt: null,
-      roles: null,
+      role: '',
+      cpf: '777.777.777-05',
     })
 
     const editor = new Employee({
       name: 'Editor',
       email: new Email('editor@gmail.com'),
       password: new Password('Herozero10@#'),
+      ddd: 82,
       phone: 888888888,
       avatar: 'avatar.png',
-      gender: 'M',
       updatedAt: null,
-      roles: null,
+      role: '',
+      cpf: '777.777.777-05',
     })
 
     await employeesRepoInMemory.create(admin, 'admin')
