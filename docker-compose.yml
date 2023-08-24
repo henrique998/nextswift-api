@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  database:
+    image: postgres
+    container_name: database
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=henrique
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=PDVs
+  redis:
+    image: redis
+    ports: 
+      - 6379:6379
+    environment:
+      - REDIS_PASSWORD=123456

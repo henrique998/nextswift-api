@@ -1,0 +1,192 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Employee {
+  id String @id
+
+  name        String
+  email       String    @unique
+  password    String
+  ddd         Int
+  phone       Int
+  cpf         String?   @unique
+  avatar      String?
+  dismissedAt DateTime?
+
+  tokens   Token[]
+  products Product[]
+
+  role   Role?   @relation(fields: [roleId], references: [id])
+  roleId String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@map("employees")
+}
+
+model Role {
+  id String @id
+
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  employees Employee[]
+
+  @@map("roles")
+}
+
+model Token {
+  id String @id
+
+  refreshToken String   @unique
+  expiresDate  DateTime
+  createdAt    DateTime @default(now())
+
+  employee    Employee @relation(fields: [employee_id], references: [id])
+  employee_id String
+
+  @@map("tokens")
+}
+
+model Customer {
+  id String @id
+
+  name      String
+  email     String    @unique
+  cpf       String?   @unique
+  ddd       Int
+  phone     Int
+  deletedAt DateTime?
+
+  cep        String  @unique
+  street     String
+  number     Int
+  complement String?
+  uf         String  @unique
+
+  purchases Purchase[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@map("customers")
+}
+
+model Supplier {
+  id String @id
+
+  name      String
+  email     String    @unique
+  cpf       String?   @unique
+  cnpj      String?   @unique
+  ddd       Int
+  phone     Int
+  deletedAt DateTime?
+
+  cep        String  @unique
+  street     String
+  number     Int
+  complement String?
+  uf         String
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@map("suppliers")
+}
+
+model Category {
+  id String @id
+
+  name String @unique
+
+  products ProductCategory[]
+
+  createdAt DateTime @default(now())
+
+  @@map("categories")
+}
+
+model ProductCategory {
+  id String @id @default(uuid())
+
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+
+  category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId String?
+
+  @@map("products-categories")
+}
+
+model Product {
+  id String @id
+
+  name        String
+  excerpt     String
+  description String
+  width       Int
+  height      Int
+  price       Int
+  quantity    Int
+  weight      Int
+
+  images     ProductImage[]
+  purchases  Purchase[]
+  categories ProductCategory[]
+
+  author   Employee? @relation(fields: [authorId], references: [id])
+  authorId String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+  removedAt DateTime?
+
+  @@map("products")
+}
+
+model ProductImage {
+  id String @id
+
+  url  String
+  name String
+  size Int
+
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+
+  createdAt DateTime @default(now())
+
+  @@map("product-images")
+}
+
+enum PaymentMethod {
+  CASH
+  CREDIT_CARD
+  DEDIT_CARD
+}
+
+model Purchase {
+  id String @id
+
+  total         Float
+  productsQty   Int
+  paymentMethod PaymentMethod
+
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+
+  buyer   Customer? @relation(fields: [buyerId], references: [id])
+  buyerId String?
+
+  createdAt DateTime @default(now())
+
+  @@map("purchases")
+}
